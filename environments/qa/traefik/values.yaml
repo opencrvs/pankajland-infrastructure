@@ -78,12 +78,6 @@ certificatesResolvers:
       # Production server
       caServer: https://acme-v02.api.letsencrypt.org/directory
 
-# 👇 Custom TLS configuration
-tlsStore:
-  default:
-    defaultCertificate:
-      # Check documentation how to create secret with static SSL certificate
-      secretName: traefik-cert
 
 deployment:
   hostNetwork: true

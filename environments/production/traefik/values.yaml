@@ -75,16 +75,10 @@ certificatesResolvers:
       # NOTE: Sometimes Let's Encrypt hit production SSL certificate issuing limits
       #       If you are having issues, switch to staging
       # Staging server
-      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       # Production server
-      # caServer: https://acme-v02.api.letsencrypt.org/directory
+      caServer: https://acme-v02.api.letsencrypt.org/directory
 
-# 👇 Custom TLS configuration
-tlsStore:
-  default:
-    defaultCertificate:
-      # Check documentation how to create secret with static SSL certificate
-      secretName: traefik-cert
 
 deployment:
   hostNetwork: true
