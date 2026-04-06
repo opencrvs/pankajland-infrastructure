@@ -68,7 +68,7 @@ certificatesResolvers:
       httpChallenge:
         entryPoint: web
       # 👇 Put admin email here
-      email: <admin email>
+      email: euan@opencrvs.org
       # Storage for certificates:
       storage: /certificates/acme.json
       # NOTE: Sometimes Let's Encrypt hit production SSL certificate issuing limits
