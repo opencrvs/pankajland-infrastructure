@@ -22,6 +22,7 @@ hpa:
 env:
   APN_SERVICE_URL: "http://apm-server.opencrvs-deps-production.svc.cluster.local:8200"
   QA_ENV: false
+  MINIO_BUCKET: ocrvs
 influxdb:
   host: influxdb-0.influxdb.opencrvs-deps-production.svc.cluster.local
 elasticsearch:
