@@ -81,7 +81,14 @@ certificatesResolvers:
 
 deployment:
   hostNetwork: true
+  additionalVolumes:
+  - hostPath:
+      path: /data/traefik
+    name: acme
 
+additionalVolumeMounts:
+- mountPath: /certificates
+  name: acme
 
 nodeSelector:
   traefik-role: ingress
