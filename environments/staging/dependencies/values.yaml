@@ -21,7 +21,7 @@ node_selector:
 minio:
   use_default_credentials: false
   restore:
-    type: 
+    type: dump
   backup:
     type: dump
 
@@ -34,7 +34,7 @@ mongodb:
 postgres:
   use_default_credentials: false
   restore:
-    type: 
+    type: dump
   backup:
     type: dump
 
