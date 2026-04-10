@@ -32,7 +32,9 @@ on:
         default: "dev"
         type: choice
         options:
-          - ""
+          - production
+          - qa
+          - staging
 
 env:
   # Assuming chart version matches core image tag

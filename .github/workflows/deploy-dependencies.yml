@@ -9,10 +9,14 @@ on:
         default: "dev"
         type: choice
         options:
-          - ""
+          - production
+          - qa
+          - staging
+
 env:
   DEPENDENCIES_CHART_VERSION: "0.1.0"
   TRAEFIK_CHART_VERSION: "39.0.0"
+
 jobs:
   approve:
     environment: ${{ inputs.environment }}

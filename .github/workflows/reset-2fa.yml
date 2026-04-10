@@ -13,7 +13,9 @@ on:
         default: 
         required: true
         options:
-          - ""
+          - production
+          - qa
+          - staging
 
 jobs:
   approve:
