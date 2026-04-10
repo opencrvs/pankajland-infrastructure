@@ -16,11 +16,11 @@ on:
       core-image-tag:
         description: "Tag of the core image"
         required: true
-        default: "v1.9.11"
+        default: "v1.9.12"
       countryconfig-image-tag:
         description: "Tag of the countryconfig image"
         required: true
-        default: "v1.9.11"
+        default: "v1.9.12"
       data-seed-enabled:
         description: "Data seeding during deployment"
         required: false
@@ -36,6 +36,9 @@ on:
           - qa
           - staging
 
+env:
+  # Assuming chart version matches core image tag
+  OPENCRVS_CHART_VERSION: "v1.9.12"
 jobs:
   approve:
     environment: ${{ inputs.environment }}
@@ -122,10 +125,7 @@ jobs:
             | kubectl apply -n opencrvs-${ENV} -f - \
             || echo "Secret $secret doesn't exist in opencrvs-deps-${ENV} namespace"
           done
-      - name: Install stern
-        run: |
-          curl -L https://github.com/stern/stern/releases/download/v1.28.0/stern_1.28.0_linux_amd64.tar.gz | tar xz
-          sudo mv stern /usr/local/bin/
+
       - name: Deploy with Helm
         id: deploy
         run: |
@@ -138,7 +138,7 @@ jobs:
             . &
           STERN_PID=$!
           touch environments/${ENV}/opencrvs-services/values.override.yaml
-          helm upgrade --install opencrvs oci://ghcr.io/opencrvs/opencrvs-services:v1.9.11 \
+          helm upgrade --install opencrvs oci://ghcr.io/opencrvs/opencrvs-services:${OPENCRVS_CHART_VERSION} \
             --timeout 15m \
             --namespace "opencrvs-${ENV}" \
             -f environments/${ENV}/opencrvs-services/values.yaml \
