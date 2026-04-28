@@ -10,3 +10,11 @@ countryconfig:
   secrets:
     reference-data-db-secret:
       - REFERENCE_DATA_DATABASE_URL
+
+postgres_on_deploy:
+  secrets:
+    reference-data-db-secret:
+      - REFERENCE_DATA_POSTGRES_USER
+      - REFERENCE_DATA_POSTGRES_PASSWORD
+      - REFERENCE_DATA_EDITOR_USER
+      - REFERENCE_DATA_EDITOR_PASSWORD
