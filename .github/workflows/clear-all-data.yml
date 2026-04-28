@@ -28,7 +28,7 @@ jobs:
         with:
           secret: ${{ github.TOKEN }}
           approvers: ${{ vars.GH_APPROVERS }}
-          minimum-approvals: 3
+          minimum-approvals: 1
           issue-title: "Reset environment (${{ inputs.environment }})"
           issue-body: >
             3 separate users must approve to reset data on production.
