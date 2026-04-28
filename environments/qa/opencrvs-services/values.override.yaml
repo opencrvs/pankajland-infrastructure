@@ -5,3 +5,8 @@
 
 env:
   OPENCRVS_ENVIRONMENT: qa
+
+countryconfig:
+  secrets:
+    reference-data-db-secret:
+      - REFERENCE_DATA_DATABASE_URL
