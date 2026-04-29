@@ -5,7 +5,7 @@
 
 env:
   OPENCRVS_ENVIRONMENT: production
-
+  TWO_FA_ENABLED: true
 countryconfig:
   secrets:
     reference-data-db-secret:
