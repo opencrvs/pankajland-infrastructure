@@ -6,11 +6,11 @@ ingress:
 uploader:
   port: 80
   image:
-    name: opencrvs/spc-cod-uploader
+    name: opencrvs/pankajland-uploader
     tag: latest
 
 uploader_api:
   port: 80
   image:
-    name: opencrvs/spc-cod-uploader-api
+    name: opencrvs/pankajland-uploader-api
     tag: latest
