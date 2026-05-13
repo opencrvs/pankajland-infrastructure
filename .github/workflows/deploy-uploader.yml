@@ -1,0 +1,73 @@
+name: Deploy uploader
+run-name: "Deploy uploader on ${{ inputs.environment }} (tag: ${{ inputs.uploader-image-tag }})"
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment"
+        required: true
+        default: "qa"
+        type: choice
+        options:
+          - "qa"
+          - "staging"
+          - "production"
+      uploader-image-tag:
+        description: "Tag of the uploader image"
+        required: true
+        default: "v1.9.6"
+jobs:
+  github-to-k8s-sync-env:
+    uses: ./.github/workflows/github-to-k8s-sync-env.yml
+    with:
+      environment: ${{ inputs.environment }}
+    secrets: inherit
+  deploy:
+    needs: github-to-k8s-sync-env
+    environment: ${{ inputs.environment }}
+    env:
+      ENV: ${{ inputs.environment }}
+      BRANCH: ${{ github.ref_name }}
+    runs-on:
+      - self-hosted
+      - k8s
+      - ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install stern
+        run: |
+          curl -L https://github.com/stern/stern/releases/download/v1.28.0/stern_1.28.0_linux_amd64.tar.gz | tar xz
+          sudo mv stern /usr/local/bin/
+      - name: Deploy uploader
+        run: |
+          stern -n "opencrvs-${ENV}" \
+            --since 1s \
+            --tail 0 \
+            --exclude 'kube-probe' \
+            --exclude '"level":(30|info)' \
+            --template '{{.PodName}}/{{.ContainerName}} | {{.Message}}{{"\n"}}' \
+            . &
+          STERN_PID=$!
+          helm upgrade --install uploader ./charts/uploader/ \
+            --namespace "opencrvs-${ENV}" \
+            -f environments/${ENV}/uploader/values.yaml \
+            --set uploader.image.tag=${{ inputs.uploader-image-tag }} \
+            --set uploader_api.image.tag=${{ inputs.uploader-image-tag }} \
+            --set hostname=${{ vars.DOMAIN }} \
+            --set env.DOMAIN=${{ vars.DOMAIN }} \
+            --create-namespace \
+            --atomic
+          kill $STERN_PID 2>/dev/null || true
+          exit $STATUS
+
+      - name: Cleanup Helm Locks
+        if: failure() || cancelled()
+        run: |
+          kubectl -n "opencrvs-${ENV}" get secrets -l owner=helm -o json | \
+          jq -r '.items[] | select(.metadata.labels.status=="pending-install" or .metadata.labels.status=="pending-upgrade") | .metadata.name' | \
+          xargs -r kubectl -n "opencrvs-${ENV}" delete secret || \
+          echo "No helm locks found, all is good"

@@ -1,0 +1,16 @@
+hostname: opencrvs.localhost
+ingress:
+  ssl_enabled: false
+
+
+uploader:
+  port: 80
+  image:
+    name: opencrvs/spc-cod-uploader
+    tag: latest
+
+uploader_api:
+  port: 80
+  image:
+    name: opencrvs/spc-cod-uploader-api
+    tag: latest
