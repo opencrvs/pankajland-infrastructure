@@ -59,14 +59,18 @@ spec:
         - name: uploader
           image: {{ .Values.uploader.image.name }}:{{ .Values.uploader.image.tag }}
           env:
-          - name: EXTERNAL_LOGIN_URL
-            value: {{ include "render-external-url" (dict "service_name" "login" "Values" .Values) }}
-          - name: LOGIN_REDIRECT_URL
-            value: {{ include "render-external-url" (dict "service_name" "uploader" "Values" .Values) }}
-          - name: SERVER_URL
-            value: {{ include "render-external-url" (dict "service_name" "uploader-api" "Values" .Values) }}
-          - name: EXTERNAL_CLIENT_URL
-            value: {{ include "render-external-url" (dict "service_name" "register" "Values" .Values) }}
+            - name: EXTERNAL_LOGIN_URL
+              value: {{ include "render-external-url" (dict "service_name" "login" "Values" .Values) }}
+            - name: LOGIN_REDIRECT_URL
+              value: {{ include "render-external-url" (dict "service_name" "uploader" "Values" .Values) }}
+            - name: SERVER_URL
+              value: {{ include "render-external-url" (dict "service_name" "uploader-api" "Values" .Values) }}
+            - name: EXTERNAL_CLIENT_URL
+              value: {{ include "render-external-url" (dict "service_name" "register" "Values" .Values) }}
+            - name: COUNTRY_CONFIG_URL
+              value: {{ include "render-external-url" (dict "service_name" "gateway" "Values" .Values) }}
+            - name: GATEWAY_URL
+              value: {{ include "render-external-url" (dict "service_name" "countryconfig" "Values" .Values) }}
           {{- include "render-env-vars" (dict "service_name" "uploader" "Values" .Values) }}
           ports:
             - containerPort: {{ .Values.uploader.port }}

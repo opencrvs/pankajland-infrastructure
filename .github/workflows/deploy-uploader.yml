@@ -59,6 +59,7 @@ jobs:
             --set uploader_api.image.tag=${{ inputs.uploader-image-tag }} \
             --set hostname=${{ vars.DOMAIN }} \
             --set env.DOMAIN=${{ vars.DOMAIN }} \
+            --set env.CONTENT_SECURITY_POLICY_WILDCARD=${{ vars.CONTENT_SECURITY_POLICY_WILDCARD }} \
             --create-namespace \
             --atomic
           kill $STERN_PID 2>/dev/null || true

@@ -51,12 +51,7 @@ imagePullSecrets:
   - name: dockerhub-credentials
 
 countryconfig:
-  env:
-    COD_URL: https://countryconfig.pankaj-qa.opencrvs.dev/causes-of-death?terms=
-    UPLOADER_APP_URL: "https://uploader.pankaj-qa.opencrvs.dev"
   secrets:
-    reference-data-db-secret:
-      - REFERENCE_DATA_DATABASE_URL
     smtp-config:
       - ALERT_EMAIL
       - SENDER_EMAIL_ADDRESS
@@ -66,10 +61,6 @@ countryconfig:
       - SMTP_SECURE
       - SMTP_USERNAME
 
-dashboards:
-  use_default_credentials: false
-  enabled: true
-
 postgres_on_deploy:
   secrets:
     reference-data-db-secret:
@@ -78,5 +69,6 @@ postgres_on_deploy:
       - REFERENCE_DATA_EDITOR_USER
       - REFERENCE_DATA_EDITOR_PASSWORD
 
-on_restore_cronjob:
-  enabled: false
+dashboards:
+  use_default_credentials: false
+  enabled: true
