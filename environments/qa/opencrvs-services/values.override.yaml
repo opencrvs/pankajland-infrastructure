@@ -49,6 +49,9 @@ postgres_on_deploy:
       - REFERENCE_DATA_POSTGRES_PASSWORD
       - REFERENCE_DATA_EDITOR_USER
       - REFERENCE_DATA_EDITOR_PASSWORD
+    spc-coding-db-secret:
+      - SPC_POSTGRES_PASSWORD
+      - SPC_POSTGRES_USER
 
 countryconfig:
   env:
@@ -57,3 +60,5 @@ countryconfig:
   secrets:
     reference-data-db-secret:
       - REFERENCE_DATA_DATABASE_URL
+    spc-coding-db-secret:
+      - SPC_CODING_DATABASE_URL
