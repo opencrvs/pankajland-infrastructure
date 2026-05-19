@@ -1,0 +1,77 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: uploader
+spec:
+  selector:
+    app: uploader
+  ports:
+    - port: {{ .Values.uploader.port }}
+      targetPort: {{ .Values.uploader.port }}
+  type: ClusterIP
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: uploader
+spec:
+  entryPoints:
+  {{- if .Values.ingress.ssl_enabled }}
+    - websecure
+  {{- end }}
+  {{- if or .Values.ingress.tls_resolver (not .Values.ingress.ssl_enabled) }}
+    - web
+  {{- end }}
+  routes:
+  - match: 'Host(`uploader.{{ .Values.hostname }}`)'
+    kind: Rule
+    services:
+    - name: uploader
+      namespace: {{ .Release.Namespace }}
+      port: {{ .Values.uploader.port }}
+    middlewares:
+      - name: sts-and-basic-response-headers
+  {{- if .Values.ingress.tls_resolver }}
+  tls:
+    certResolver: {{ .Values.ingress.tls_resolver }}
+  {{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uploader
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uploader
+  template:
+    metadata:
+      labels:
+        app: uploader
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: uploader
+          image: {{ .Values.uploader.image.name }}:{{ .Values.uploader.image.tag }}
+          env:
+            - name: EXTERNAL_LOGIN_URL
+              value: {{ include "render-external-url" (dict "service_name" "login" "Values" .Values) }}
+            - name: LOGIN_REDIRECT_URL
+              value: {{ include "render-external-url" (dict "service_name" "uploader" "Values" .Values) }}
+            - name: SERVER_URL
+              value: {{ include "render-external-url" (dict "service_name" "uploader-api" "Values" .Values) }}
+            - name: EXTERNAL_CLIENT_URL
+              value: {{ include "render-external-url" (dict "service_name" "register" "Values" .Values) }}
+            - name: COUNTRY_CONFIG_URL
+              value: {{ include "render-external-url" (dict "service_name" "gateway" "Values" .Values) }}
+            - name: GATEWAY_URL
+              value: {{ include "render-external-url" (dict "service_name" "countryconfig" "Values" .Values) }}
+          {{- include "render-env-vars" (dict "service_name" "uploader" "Values" .Values) }}
+          ports:
+            - containerPort: {{ .Values.uploader.port }}
+              protocol: TCP

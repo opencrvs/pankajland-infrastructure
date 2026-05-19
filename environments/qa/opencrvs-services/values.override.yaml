@@ -4,12 +4,43 @@
 ##################################################################################
 
 env:
-  OPENCRVS_ENVIRONMENT: qa
+  OPENCRVS_ENVIRONMENT: "qa"
 
-countryconfig:
-  secrets:
-    reference-data-db-secret:
-      - REFERENCE_DATA_DATABASE_URL
+mongodb:
+  databases:
+    - prefix: USER_MGNT
+      db: user-mgnt
+      user: user-mgnt
+    - prefix: HEARTH
+      db: hearth-dev
+      user: hearth
+      roles: "[{ role: 'readWrite', db: 'hearth' }, { role: 'readWrite', db: 'performance' }, { role: 'readWrite', db: 'hearth-dev' }]"
+    - prefix: CONFIG
+      db: application-config
+      user: config
+    - prefix: PERFORMANCE
+      db: performance
+      user: performance
+    - prefix: METRICS
+      db: metrics
+      user: metrics
+    - prefix: OPENHIM
+      db: openhim-dev
+      user: openhim
+      roles: "[{ role: 'readWrite', db: 'openhim' }, { role: 'readWrite', db: 'openhim-dev' }]"
+    - prefix: WEBHOOKS
+      db: webhooks
+      user: webhooks
+    - prefix: NOTIFICATION
+      db: notification
+      user: notification
+    - prefix: EVENTS
+      db: events
+      user: events
+      roles: "[{ role: 'readWrite', db: 'events' }, {role: 'read', db: 'user-mgnt'}]"
+    - prefix: UPLOADER
+      db: uploaded-records
+      user: uploader
 
 postgres_on_deploy:
   secrets:
@@ -18,3 +49,11 @@ postgres_on_deploy:
       - REFERENCE_DATA_POSTGRES_PASSWORD
       - REFERENCE_DATA_EDITOR_USER
       - REFERENCE_DATA_EDITOR_PASSWORD
+
+countryconfig:
+  env:
+    COD_URL: https://countryconfig.pankaj-qa.opencrvs.dev/causes-of-death?terms=
+    UPLOADER_APP_URL: "https://uploader.pankaj-qa.opencrvs.dev"
+  secrets:
+    reference-data-db-secret:
+      - REFERENCE_DATA_DATABASE_URL

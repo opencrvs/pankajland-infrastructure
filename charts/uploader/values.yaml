@@ -1,0 +1,16 @@
+hostname: opencrvs.localhost
+ingress:
+  ssl_enabled: false
+
+
+uploader:
+  port: 80
+  image:
+    name: opencrvs/pankajland-uploader
+    tag: latest
+
+uploader_api:
+  port: 80
+  image:
+    name: opencrvs/pankajland-uploader-api
+    tag: latest
