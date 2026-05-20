@@ -68,9 +68,9 @@ spec:
             - name: EXTERNAL_CLIENT_URL
               value: {{ include "render-external-url" (dict "service_name" "register" "Values" .Values) }}
             - name: COUNTRY_CONFIG_URL
-              value: {{ include "render-external-url" (dict "service_name" "gateway" "Values" .Values) }}
-            - name: GATEWAY_URL
               value: {{ include "render-external-url" (dict "service_name" "countryconfig" "Values" .Values) }}
+            - name: GATEWAY_URL
+              value: {{ include "render-external-url" (dict "service_name" "gateway" "Values" .Values) }}
           {{- include "render-env-vars" (dict "service_name" "uploader" "Values" .Values) }}
           ports:
             - containerPort: {{ .Values.uploader.port }}
