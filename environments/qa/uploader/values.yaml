@@ -1,0 +1,7 @@
+imagePullSecrets:
+  # Default value for credentials created while yarn environment:init
+  - name: dockerhub-credentials
+
+ingress:
+  tls_resolver: letsencrypt
+  ssl_enabled: true
