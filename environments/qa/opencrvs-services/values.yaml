@@ -60,6 +60,11 @@ countryconfig:
       - SMTP_PORT
       - SMTP_SECURE
       - SMTP_USERNAME
+    spc-interop-config:
+      - SPC_CLIENT_ID
+      - SPC_CLIENT_SECRET
+      - SPC_COUNTRY_CONFIG_URL
+      - SPC_AUTH_URL
 
 postgres_on_deploy:
   secrets:
