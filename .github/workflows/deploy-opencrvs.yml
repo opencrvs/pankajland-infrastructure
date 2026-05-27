@@ -81,6 +81,10 @@ jobs:
       COUNTRYCONFIG_IMAGE_NAME: ${{ secrets.DOCKERHUB_ACCOUNT || 'opencrvs' }}/${{ secrets.DOCKERHUB_REPO || 'ocrvs-farajaland'}}
       SENDER_EMAIL_ADDRESS: ${{ secrets.SENDER_EMAIL_ADDRESS }}
       ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+      SPC_CLIENT_ID: ${{ secrets.SPC_CLIENT_ID }}
+      SPC_CLIENT_SECRET: ${{ secrets.SPC_CLIENT_SECRET }}
+      SPC_COUNTRY_CONFIG_URL: ${{ secrets.SPC_COUNTRY_CONFIG_URL }}
+      SPC_AUTH_URL: ${{ secrets.SPC_AUTH_URL }}
     runs-on:
       - self-hosted
       - k8s
