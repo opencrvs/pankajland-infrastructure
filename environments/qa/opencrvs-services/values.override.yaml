@@ -62,3 +62,7 @@ countryconfig:
       - REFERENCE_DATA_DATABASE_URL
     spc-coding-db-secret:
       - SPC_CODING_DATABASE_URL
+
+gateway:
+  env:
+    DISABLE_RATE_LIMIT: "true"
